@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #F8FAFC;
+      color: #475569;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      background-color: #2b2b2b;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #8B5CF6;
+      font-size: 0.95rem;
+      padding: 7px 22px;
+      border: 1.5px solid #8B5CF6;
+      border-radius: 6px;
+      transition: background-color 0.25s, color 0.25s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background-color: #8B5CF6;
+      color: #F8FAFC;
+    }
+
+    /* ── Section Common ── */
+    section {
+      min-height: 100vh;
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    section h2.section-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #8B5CF6;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    section h3.section-subtitle {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    section p.section-desc {
+      font-size: 1rem;
+      color: #475569;
+      max-width: 700px;
+      text-align: center;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    /* ── Image Placeholder ── */
+    .img-placeholder {
+      width: 100%;
+      max-width: 480px;
+      height: 280px;
+      border: 2.5px dashed #8B5CF6;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #ede9fe;
+      color: #8B5CF6;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .img-placeholder:hover {
+      background-color: #ddd6fe;
+    }
+
+    .img-placeholder svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 10px;
+      stroke: #8B5CF6;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .img-placeholder input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .img-placeholder img.preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      display: none;
+    }
+
+    /* ── Image Grid (Works) ── */
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .img-grid .img-placeholder {
+      max-width: 100%;
+      height: 200px;
+    }
+
+    /* ── Skills List ── */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 40px;
+    }
+
+    .skill-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px 28px;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      font-weight: 600;
+      color: #10B981;
+      font-size: 1rem;
+    }
+
+    /* ── About layout ── */
+    .about-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      color: #475569;
+      line-height: 1.8;
+    }
+
+    /* ── Contact Form ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #8B5CF6;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background-color: #f5f3ff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #8B5CF6;
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .contact-form button {
+      padding: 12px;
+      background-color: #10B981;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.25s;
+    }
+
+    .contact-form button:hover {
+      background-color: #059669;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background-color: #2b2b2b;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.85rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      section {
+        padding: 60px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#home" class="active">Home</a>
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
+    <a href="#works">works</a>
+    <a href="#contact">contact</a>
+  </nav>
+
+  <!-- ── HOME ── -->
+  <section id="home">
+    <h2 class="section-title">Home</h2>
+    <h3 class="section-subtitle">"찰나의 장면에서 서사를 발견하는 디지털 에세이스트"</h3>
+    <p class="section-desc">
+      대중의 시선을 사로잡는 것은 화려한 기술이 아니라, 그 속에 담긴 '공감의 서사'라고 믿습니다. 저는 수많은 프레임 속에서 핵심이 되는 찰나를 발견하고, 이를 현대적인 감각의 디지털 콘텐츠로 브랜딩합니다.
+      
+    </p>
+
+    <!-- 홈 섹션 이미지 칸 -->
+    <div class="img-placeholder" title="클릭하여 이미지 업로드">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="40" height="40" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <span>클릭하여 이미지 업로드</span>
+      <input type="file" accept="image/*" onchange="previewImage(this)" />
+      <img class="preview"  src="feed1.jpg" alt="미리보기" style="display:block;" />
+    </div>
+      <p style="margin-top: 20px; font-size: 0.95rem; color: #475569; text-align: center; max-width: 925px; gap: 20px;">
+      드라마와 영화, 그리고 일상의 조각들을 분석하여 독창적인 스토리텔링을 구축하며, 프리미어 프로와 애프터 이펙트 등 전문 툴을 활용해 
+      최적화된 시각적 경험을 구현합니다.
+      트렌드를 읽는 눈과 고유한 색깔을 담은 편집을 통해, 단순한 시청을 넘어 독자와 소통하는 가치 있는 콘텐츠를 지향합니다.
+      </p>
+  </section>
+<!-- ── ABOUT ── -->
+  <section id="about" style="background-color: #f0fdf4;">
+    <h2 class="section-title">About</h2>
+    <div class="about-content">
+      <!-- About 이미지 칸 -->
+      <div class="img-placeholder" style="max-width:320px; height:320px;" title="클릭하여 이미지 업로드">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>프로필 사진 업로드</span>
+        <input type="file" accept="image/*" onchange="previewImage(this)" />
+        <img class="preview" src= feed3.jpg alt="미리보기" style="display:block;"  />
+      </div>
+
+      <div class="about-text">
+        <h3 class="section-subtitle" style="text-align:left;">Identity</h3>
+        <br>
+<br />1. Insightful Eye: 텍스트와 영상 사이의 맥락을 읽어내고, 숨겨진 서사를 발견하는 예리한 시선.</br>
+
+<br />2.Logical Creation: 서비스 디자인 사고를 바탕으로, 사용자(독자)가 가장 편안하게 몰입할 수 있는 콘텐츠 구조 설계.</br>
+
+<br />3.Visual Storytelling: 어도비 툴과 피그마를 자유자재로 다루며 감각적인 비주얼로 메시지를 구체화하는 제작 능력.</br>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <p class="section-desc">
+      <br />Content Planning: 드라마/영화의 핵심 서사를 발굴하고 타겟에 맞는 콘텐츠로 가공하는 기획력.</br>
+      <br />Information Architecture: 복잡한 정보를 그리드 기반으로 정돈하고 가독성 높게 배치하는 구조화 능력.</br>
+    </p>
+
+    <div class="skills-container">
+      <div class="skill-card">HTML / CSS</div>
+      <div class="skill-card">JavaScript</div>
+      <div class="skill-card">GitHub</div>
+      <div class="skill-card">Node.js</div>
+      <div class="skill-card">Figma</div>
+    </div>
+
+    <!-- Skills 섹션 이미지 칸 -->
+    <div class="img-placeholder" title="클릭하여 이미지 업로드">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <span>클릭하여 이미지 업로드</span>
+      <input type="file" accept="image/*" onchange="previewImage(this)" />
+      <img class="preview" alt="미리보기" />
+    </div>
+  </section>
+
+  <!-- ── WORKS ── -->
+  <section id="works" style="background-color: #f0fdf4;">
+    <h2 class="section-title">Works</h2>
+    <p class="section-desc">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, voluptatum necessitatibus.
+    </p>
+
+    <!-- Works 이미지 그리드 (4칸) -->
+    <div class="img-grid">
+      <div class="img-placeholder" title="클릭하여 이미지 업로드">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>작품 1</span>
+        <input type="file" accept="image/*" onchange="previewImage(this)" />
+        <img class="preview" alt="미리보기" />
+      </div>
+      <div class="img-placeholder" title="클릭하여 이미지 업로드">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>작품 2</span>
+        <input type="file" accept="image/*" onchange="previewImage(this)" />
+        <img class="preview" alt="미리보기" />
+      </div>
+      <div class="img-placeholder" title="클릭하여 이미지 업로드">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>작품 3</span>
+        <input type="file" accept="image/*" onchange="previewImage(this)" />
+        <img class="preview" alt="미리보기" />
+      </div>
+      <div class="img-placeholder" title="클릭하여 이미지 업로드">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>작품 4</span>
+        <input type="file" accept="image/*" onchange="previewImage(this)" />
+        <img class="preview" alt="미리보기" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <p class="section-desc">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, voluptatum necessitatibus.
+    </p>
+
+    <!-- Contact 이미지 칸 -->
+    <div class="img-placeholder" style="margin-bottom: 36px;" title="클릭하여 이미지 업로드">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <span>클릭하여 이미지 업로드</span>
+      <input type="file" accept="image/*" onchange="previewImage(this)" />
+      <img class="preview" alt="미리보기" />
+    </div>
+
+    <form class="contact-form" onsubmit="return false;">
+      <input type="text" placeholder="이름" />
+      <input type="email" placeholder="이메일" />
+      <textarea placeholder="메시지를 입력하세요..."></textarea>
+      <button type="submit">보내기</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Portfolio. All rights reserved.</p>
+  </footer>
+
+  <script>
+    /* ── 이미지 미리보기 ── */
+    function previewImage(input) {
+      const placeholder = input.closest('.img-placeholder');
+      const preview = placeholder.querySelector('img.preview');
+      const label = placeholder.querySelector('span');
+      const icon = placeholder.querySelector('svg');
+
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+          if (label) label.style.display = 'none';
+          if (icon) icon.style.display = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    /* ── 네비게이션 활성화 ── */
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav a');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            navLinks.forEach((link) => link.classList.remove('active'));
+            const id = entry.target.getAttribute('id');
+            const active = document.querySelector(`nav a[href="#${id}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+  </script>
+</body>
+</html>
